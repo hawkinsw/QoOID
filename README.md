@@ -2,16 +2,16 @@
 
 This is the working area for the individual Internet-Draft, "Quality of Outcome".
 
-* [Editor's Copy](https://domoslabs.github.io/QoORFC/#go.draft-teigen-ippm-qoo.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-teigen-ippm-qoo)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-teigen-ippm-qoo)
-* [Compare Editor's Copy to Individual Draft](https://domoslabs.github.io/QoORFC/#go.draft-teigen-ippm-qoo.diff)
+* [Editor's Copy](https://domoslabs.github.io/QoOID/#go.draft-olden-ippm-qoo.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-olden-ippm-qoo)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-olden-ippm-qoo)
+* [Compare Editor's Copy to Individual Draft](https://domoslabs.github.io/QoOID/#go.draft-olden-ippm-qoo.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/domoslabs/QoORFC/blob//CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/domoslabs/QoOID/blob//CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
