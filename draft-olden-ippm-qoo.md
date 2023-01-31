@@ -12,9 +12,11 @@ v: 3
 area: "Transport"
 workgroup: "IP Performance Measurement"
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - Quality Attenuation
+ - Application Outcomes
+ - Quality of Outcome
+ - Performance monitoring
+ - Network quality
 venue:
   group: "IP Performance Measurement"
   type: "Working Group"
@@ -93,9 +95,9 @@ We propose representing network quality as a set of latency percentiles and for 
 
 The work proposes a minimum viable framework, and often trades precision for simplicity. The justification for this is to ensure adoption and usability in many different contexts such as active testing from applications and monitoring from network equipment. To counter the loss of precision, we require some parameters that allow for analysis of the precision.
 
-# Proposal
+# Background
 
-The foundation of the framework is Latency Distributions. This work will not go into detail about how to gather them, but some techniques are:
+The foundation of the framework is Quality Attenuation {{TR-452.1}}. This work will not go into detail about how to measure Quality Attenuation, but some relevant techniques are:
 
 * Active probing with TWAMP Light / STAMP / IRTT
 * Varying Latency Under Load Tests
@@ -105,7 +107,7 @@ The foundation of the framework is Latency Distributions. This work will not go 
 * TCP SYN ACK / DNS Lookup RTT Capture
 * Estimation based on other performance data
 
-Using Latency distributions to measure network quality is nothing new and has been proposed by various researchers/practitioners. The novelty of the Quality Attenuation metric is to view packet Loss is seen as infinite (or too late to be of use e.g. >3 seconds) latency {{TR-452.1}}.
+Quality Attenuation represents quality measurements as distributions. Using Latency distributions to measure network quality is nothing new and has been proposed by various researchers/practitioners. The novelty of the Quality Attenuation metric is to view packet Loss as infinite (or too late to be of use e.g. >3 seconds) latency {{TR-452.1}}.
 
 Latency Distributions can be gathered via both passive monitoring and active testing. The active testing can use any type of IP traffic. It is OSI Layer and network technology independent, meaning it can be gathered in an end-user application, within some network equipment, or anywhere in between.
 
@@ -224,85 +226,17 @@ NRPoU
 
 Of course, it is possible to specify network requirements for Teams with multiple NRP/NRPoU, for different quality levels or one/two way video and so on. Then one can calculate the QoO at each level.
 
-# Summarizing the framework
-Calculating QoO:
-Measure latency
-Build a distribution, sample it at [1p,50p,...99.9p]
-Map the distribution with one or more network requirements. E.g., A network requirement for a Video Conference
-If there is no overlap, the network requirement for the Video Conference is met and the likelihood of perfect application outcome is 100%. I.e., the QoO for Video Conferencing is 100.
-If there is an overlap. Use the probability formula to quantify the risk of non-ideal outcome.
+# Known Weaknesses
+We have described a way of simplifying how the network requirements of applications can be compared to quality attenuation measurements. The simplification introduces several artifacts that may or may not be significant.
 
-Describing Network Requirements:
-A minimum throughput
-A list of percentiles and associated ms if reaches guarantees perfection (or at least no degradation because of the network)
-A list of percentiles and associated ms where beyond this point, the application will be useless
+## Missing Temporal Information in Distributions.
+These two latency series: 1,200,1,200,1,200,1,200,1,200 and 1,1,1,1,1,200,200,200,200,200 Will have identical distributions, but may have different application performance. Ignoring this information is a tradeoff between simplicity and precision. To capture all information necessary to perfectly capture outcomes we are getting into extreme computational complexity. As an application's performance is bound by how the developers change to varying network performance, meaning nearly all different series of latencies may have different application outcomes.
 
-This framework makes few requirements. This does of course have pros and cons. Precision vs useability and flexibility. How, and under what conditions, a latency distribution is gathered is undefined. This flexibility is key to be able to capture a large range of different types of network usage. It is also futureproof, a known problem with many existing network tests is that they define, for example, TCP as the protocol for the test. If all applications adopted BBR, the test would be rendered useless.
-Example Use-Cases:
-Web/Mobile App Network Test for specific application. For example, a Video Conference Service can actively test end-to-end whether the network is good enough for a lag free experience.
-Network Equipment Traffic Monitoring. A network equipment can passively monitor latency of real traffic and show QoOs for different types of traffic.
-An end-user application can test the network to check whether the QoO, or which  configurations (resolution, fps, etc.)  would be optimal.
-An end-user application can ask the network what latency distributions are typical, and thereby calculate their QoO.
-Network operators can test and monitor performance on their networks.
-Before and after an equipment / software upgrade.
+## Subsampling the real distribution
+Additionally, we cannot capture latency on every packet that is sent. We can probe and sample, but there will always be unknowns. We are now in the realm of probability. Perfection is impossible, but instead of denying this,  we should embrace it, which is why talking about the probability of outcomes is the way forward.
 
-Comparing Apps:
-On this network:
-Macrohard Teams have a 93% chance of a lag free experience (Note! Made up numbers!)
-Googol Meets have a 90% chance of a lag free experience (Note! Made up numbers!)
-mooZ have a 88% chance of a lag-free experience (Note! Made up numbers!)
-
-Application Category / Specific Application QoO scores as an addition to Apple Network Quality test (with responsiveness)
-networkquality
-==== SUMMARY ====
-Upload capacity: 225.713 Mbps
-Download capacity: 110.458 Mbps
-Upload flows: 20
-Download flows: 20
-Responsiveness: High (3426 RPM)
-
-Quality of Outcome (QoO) (probability of lag-free):
-Video Conference: 100%
-FaceTime: 100%
-Cloud Gaming: 99%
-Interactive VR: 98%
-
-—------------------------
-networkquality more
-==== SUMMARY ====
-Upload capacity: 225.713 Mbps
-Download capacity: 110.458 Mbps
-Upload flows: 20
-Download flows: 20
-Responsiveness: High (3426 RPM)
-
-Quality of Outcome (QoO) (probability of lag-free):
-Video Conference: 100%
-FaceTime: 100%
-Cloud Gaming: 99%
-Interactive VR: 98%
-3000 cyclic samples, start 00:08:00, end 00:08:30
-0p=1ms,....,100p=21ms
-// should this include probing type?
-
-Known Weaknesses:
-Missing Temporal Information in Distributions.
-These two latency series: 1,200,1,200,1,200,1,200,1,200 and 1,1,1,1,1,200,200,200,200,200 Will have identical distributions, but may have different application performance. Ignoring this information is a tradeoff between simplicity and precision. To capture all information necessary to perfectly capture outcomes we are getting into extreme computational complexity. As an application's performance is bound by how the developers change to varying network performance, meaning nearly all different series of latencies may have different application outcomes. I.e., this is O(NN ) territory*. Adding another data point such as a pairwise distance measure to the network requirement will also significantly increase the difficulties of determining Network Requirements as one would need to test a huge amount of series to get it correctly.
-
-Additionally, we cannot capture latency on every packet that is sent. We can probe and sample, but there will always be unknowns. We are now in the realm of probability. Perfection is impossible, but instead of denying this,  we should embrace it, which is why talking about the probability of outcomes is the way forward. An advantage of the QoO framework is having a single distance measure between perfect and useless as it lets us approximate probabilities in between and treating it as a probability. 99% chance of being lag free, means there is a 1% chance of lag.
-
-*If we imagine network latency could only be either 1 or 2 ms and that no flow was more than 3 packets long, for an application to check whether without discarding any temporal information, a network requirement would have to account for all combinations of latency. I.e.,:
-1,1,1 -  1,2,1 - ,1,1,2 - 1,2,2 - 2.1,1 - 2,2,1 - 2,1,2, - 2-2-2.
-In big O notation: N = 1 or 2 ms = 2. M = 3 packets, 2^3=8 or O(N^M)
-
-Assuming Linear Relationship between Perfect (and that it is not really a probability)
-One can conjure up scenarios where 50ms latency is actually worse than 51ms latency as developers may have chosen 50ms as the threshold for changing quality, and the threshold may be imperfect.Taking these scenarios into account would add another magnitude of complexity to determining network requirements and finding a distance measure (between requirement and actual measured capability), and the scenarios are likely rare.
-
-In a scenario where:
-50ms p99.9 latency = 50% QoO,
-51ms p99.9 latency = 49% QoO,
-52ms p99.9 latency = 48% QoO
-The linear relationship is assumed. This may not always hold true, but will likely be adequate.  Taking non-linear approaches into account would make creating network requirements at least one order of magnitude more difficult.
+## Assuming Linear Relationship between Perfect and useless (and that it is not really a probability)
+One can conjure up scenarios where 50ms latency is actually worse than 51ms latency as developers may have chosen 50ms as the threshold for changing quality, and the threshold may be imperfect. Taking these scenarios into account would add another magnitude of complexity to determining network requirements and finding a distance measure (between requirement and actual measured capability).
 
 # Conventions and Definitions
 
