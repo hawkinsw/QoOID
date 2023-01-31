@@ -20,8 +20,8 @@ venue:
   type: "Working Group"
   mail: "ippm@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/ippm/"
-  github: "domoslabs/QoORFC"
-  latest: "https://domoslabs.github.io/QoORFC/draft-teigen-ippm-qoo.html"
+  github: "domoslabs/QoOID"
+  latest: "https://domoslabs.github.io/QoOID/draft-olden-ippm-qoo.html"
 
 author:
  -
@@ -87,9 +87,9 @@ The framework proposes a way of sampling network quality, setting network qualit
 # Introduction
 {{draft-teigen-ippm-app-quality-metric-reqs}} describes a set of requirements for a network quality framework. This document explores how the quality attenuation metric and framework can be extended to meet the full set of requirements.
 
-Quality attenuation is a network quality metric that meets the three criteria we set out in the requirements; it captures the probabilty of good or bad application outcomes, it is composable, and it can be compared to a variety of application requirements. The part that is still missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application (or per application-type) approach is appropriate here. The challenge lies in how to simplify. We must specify how and when it is apporpriate to throw away information without loosing too much precision and accuracy in the results.
+Quality attenuation is a network quality metric that meets the three criteria we set out in the requirements; it can capture the probabilty of good or bad application outcomes, it is composable, and it can be compared to a variety of application requirements. The part that is still missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application (or per application-type) approach is appropriate here. The challenge lies in how to simplify. We must specify how and when it is apporpriate to throw away information without loosing too much precision and accuracy in the results.
 
-We propose measuring network quality as a set of latency percentiles and for application developers to describe network requirements in the same manner. We propose a formula for a distance measure between perfect and useless quality. This distance measure can calculate something that can be simplified into statements such as “A Video Conference has a 93% chance of being lag free on this network” all while making it possible to use the framework both for end-to-end test and from within.
+We propose representing network quality as a set of latency percentiles and for application developers to describe network requirements in the same manner. We propose a formula for a distance measure between perfect and useless quality. This distance measure can calculate something that can be simplified into statements such as “A Video Conference has a 93% chance of being lag free on this network” all while making it possible to use the framework both for end-to-end test and from within.
 
 The work proposes a minimum viable framework, and often trades precision for simplicity. The justification for this is to ensure adoption and usability in many different contexts such as active testing from applications and monitoring from network equipment. To counter the loss of precision, we require some parameters that allow for analysis of the precision.
 
@@ -209,9 +209,9 @@ Someone who wishes to find sophisticated network requirements for and
 A QoO score at 94 can be communicated as "Johns iPhone has a 94% chance of lag-free Video Conferencing", however, this does not mean that at any point of time there is a 6% chance of lag. It means there is a 6% chance of experiencing lag during the entire session/time-period, and the network requirements should be adjusted accordingly.
 
 The reason for making the QoO metric for a session or time-period is to make it understandable for an end-user, an end-user should not have to relate to the time period the metric is for.
-	
+
 # An example
-Microsofts own video-conferencing service requirements for Teams can be translated into the QoO Framework. For best performance for video meetings they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and <30 ms jitter. This can be translated to an NRP (if we take some liberties with interpreting their jitter score);
+Microsofts own video-conferencing service requirements for Teams can be translated into the QoO Framework. For best performance for video meetings they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and <30 ms jitter. This can be translated to an NRP (if we take some liberties with interpreting their jitter score):
 
 NRP Microsoft Teams:
 At minimum 4/4 Mbps.
