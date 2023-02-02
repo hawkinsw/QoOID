@@ -165,7 +165,7 @@ Where the NRPoU percentiles and NRP are a required pair. I.e., if the 99.9th per
 At this point we have everything to calculate the quality of the application outcome. The QoO. There are 3 scenarios:
 
 1. The network meets all the requirements for perfection. There is a 100% chance that the application is not lagging because of the network
-2. The network does meet one of the points of uselessness, including bandwidth. There is a 0% chance that the application will work becuase of the network
+2. The network does meet one of the criteria of uselessness, including bandwidth. There is a 0% chance that the application will work because of the network
 3. The network does not meet NRP but is not beyond NRPoU.
 
 1 and 2 require nothing more from the framework. For 3, we will now specify the calculation between to translate these distances to a 0 to 100 measure. We use the percentile pair where the measured latency is the closest to the NRPoU as the application is only as good as its weakest link.
