@@ -80,20 +80,20 @@ informative:
 
 --- abstract
 
-This document describes a new network quality framework named Quality of Outcome(QoO). The QoO framework is uniqe among network quality frameworks in satisfying all the requirements layed out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators".
+This document describes a new network quality framework named Quality of Outcome (QoO). The QoO framework is unique among network quality frameworks in satisfying all the requirements layed out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators".
 
-The framework proposes a way of sampling network quality, setting network quality requirements and a formula for calculating the probability for a sampled network to reach network requirements.
+The framework proposes a way of sampling network quality, setting network quality requirements and a formula for calculating the probability for the sampled network to satisfy network requirements.
 
 --- middle
 
 # Introduction
 {{draft-teigen-ippm-app-quality-metric-reqs}} describes a set of requirements for a network quality framework. This document explores how the quality attenuation metric and framework can be extended to meet the full set of requirements.
 
-Quality attenuation is a network quality metric that meets the most of the criterias set out in the requirements; it can capture the probabilty of a network satisfying network requirements, it is composable, and it can be compared to a variety of application requirements. The part that is still missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application, per application-type, or per-SLA approach is appropriate here. The challenge lies in how to simplify. We must specify how and when it is apporpriate to throw away information without loosing too much precision and accuracy in the results.
+Quality attenuation is a network quality metric that meets the most of the criterias set out in the requirements; it can capture the probability of a network satisfying requirements, it is composable, and it can be compared to a variety of application requirements. The part that is yet missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application, per application-type, or per-SLA approach is appropriate here. The challenge lies in specifying how to simplify enough without losing too much in terms of precision and accuracy.
 
-We believe the probibibalistic approach is key as the network stack and network quality adoption for applications can be highly complex. Applications and the underlying networking protocols makes separate optimizations based on their percieved network quality over time and saying something certain about an outcome will be practically impossible. However, we can make educated guesses on the probability of outcomes.
+We believe the probabilistic approach is key as the network stack and applications network quality adaptation can be highly complex. Applications and the underlying networking protocols makes separate optimizations based on their perceived network quality over time and saying something about an outcome with absolute certainty will be practically impossible. We can however make educated guesses on the probability of outcomes.
 
-We propose representing network quality as a set of latency percentiles and minimum throughput. Application developers, regulatory bodies and other interested parties can describe network requirements in the same manner. We propose a formula for a distance measure between perfect and useless quality. This distance measure can, with some assumptions, calculate something that can be simplified into statements such as “A Video Conference has a 93% chance of being lag free on this network” all while making it possible to use the framework both for end-to-end test and analysis from within the network.
+We propose representing network quality as minimum required throughput and set of latency percentiles. Application developers, regulatory bodies and other interested parties can describe network requirements in the same manner. We propose a formula for a distance measure between perfect and useless quality. This distance measure can, with some assumptions, calculate something that can be simplified into statements such as “A Video Conference has a 93% chance of being lag free on this network” all while making it possible to use the framework both for end-to-end test and analysis from within the network.
 
 The work proposes a minimum viable framework, and often trades precision for simplicity. The justification for this is to ensure adoption and usability in many different contexts such as active testing from applications and monitoring from network equipment. To counter the loss of precision, we require some parameters that allow for analysis of the precision.
 
@@ -109,7 +109,7 @@ The foundation of the framework is Quality Attenuation {{TR-452.1}}. This work w
 * TCP SYN ACK / DNS Lookup RTT Capture
 * Estimation
 
-Quality Attenuation represents quality measurements as distributions. Using Latency distributions to measure network quality is nothing new and has been proposed by various researchers/practitioners. The novelty of the Quality Attenuation metric is to view packet Loss as infinite (or too late to be of use e.g. >3 seconds) latency {{TR-452.1}}.
+Quality Attenuation represents quality measurements as distributions. Using Latency distributions to measure network quality is nothing new and has been proposed by various researchers/practitioners. The novelty of the Quality Attenuation metric is to view packet Loss as infinite (or too late to be of use e.g. > 3 seconds) latency {{TR-452.1}}.
 
 Latency Distributions can be gathered via both passive monitoring and active testing. The active testing can use any type of IP traffic. It is OSI Layer and network technology independent, meaning it can be gathered in an end-user application, within some network equipment, or anywhere in between.
 
@@ -120,13 +120,13 @@ Two distributions can be composed using convolution {{TR-452.1}}.
 # Sampling requirements
 To reach the design goal of being useful in the contexts laid out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators" {{draft-teigen-ippm-app-quality-metric-reqs}}, this work imposes no requirement on the time period or the network loading situation. This choice has pros and cons. Latency under load is extremely important, but average or median latency has a role too. However, a network quality metric that does not take latency under load into account is bound to fail at predicting application outcome.
 
-This framework only requires a latency distribution. If one samples latency over a time period where the network is loaded, latency under load will be part of the distribution, which is encouraged, but is not always possible, for example when passively monitoring the latency of real traffic.
+This framework only requires a latency distribution. [sentence]If one samples latency over a time period where the network is loaded, latency under load will be part of the distribution, which is encouraged, but is not always possible, for example when passively monitoring the latency of real traffic.
 
-One needs quite a few samples to have a statistically significant distribution and modeling a distribution may be a challenging software engineering task, hence we need to sample the latency distribution at certain percentiles. A list of 10 percentiles in a logarithmic-esque fashion has already been suggested in industry \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] and seems adequate. This is all that the framework defines. Note that convolution still works with a list of percentiles, but precision takes a hit.
+It takes quite a few samples to have a statistically significant distribution. Modeling a distribution may be a challenging software engineering task, hence we need to sample the latency distribution at certain percentiles. A list of 10 percentiles in a logarithmic-esque fashion has already been suggested in industry \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] and seems adequate. This is all that the framework defines. Note that convolution can still be applied with a list of percentiles, but at lower precision.
 
-The framework is flexible when it comes to the direction of traffic that is being sampled, but does require that it is noted whether the latency distribution is measured one-way or two-way. The framework does not require a bandwidth measure, but requires a note on the maximal observed throughput in the time period.
+The framework is flexible when it comes to the direction of traffic that is being sampled, but does require that it is noted whether the latency distribution is measured one-way or two-way. The framework does not require an explicit bandwidth measurement, but does require a note on the maximal observed throughput in the time period.
 
-By not requiring a specific number of samples, this framework allows taking 10 samples and calling it a distribution, which of course is not ideal. On the other hand, making the framework too complex and difficult to adhere to using real-world equipment and applications is the best way to ensure that this framework goes unused. Constraints will vary for different network equipment and applications.
+By not requiring a specific number of samples, this framework allows taking 10 samples and calling it a distribution, which of course is not ideal. On the other hand, making the framework overly complex and difficult to adhere to using real-world equipment and applications is the best way to ensure that this framework goes unused. Constraints will vary for different network equipment and applications.
 
 To make sure we can trust measurements from others and analyze their precision, we require:
 
