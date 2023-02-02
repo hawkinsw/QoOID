@@ -118,7 +118,7 @@ A key assumption behind the choice of latency distribution is that different app
 Two distributions can be composed using convolution {{TR-452.1}}.
 
 # Sampling requirements
-To reach the design goal of being useful in the contexts laid out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators", this work imposes no requirement on the time period or the network loading situation. This choice has pros and cons. Latency under load is extremely important, but average or median latency has a role too. However, a network quality metric that does not take latency under load into account is bound to fail at predicting application outcome.
+To reach the design goal of being useful in the contexts laid out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators" {{draft-teigen-ippm-app-quality-metric-reqs}}, this work imposes no requirement on the time period or the network loading situation. This choice has pros and cons. Latency under load is extremely important, but average or median latency has a role too. However, a network quality metric that does not take latency under load into account is bound to fail at predicting application outcome.
 
 This framework only requires a latency distribution. If one samples latency over a time period where the network is loaded, latency under load will be part of the distribution, which is encouraged, but is not always possible, for example when passively monitoring the latency of real traffic.
 
