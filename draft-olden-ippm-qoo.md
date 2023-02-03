@@ -87,9 +87,9 @@ The framework proposes a way of sampling network quality, setting network qualit
 --- middle
 
 # Introduction
-{{draft-teigen-ippm-app-quality-metric-reqs}} describes a set of requirements for a network quality framework. This document explores how the quality attenuation metric and framework can be extended to meet the full set of requirements.
+"Requirements for a Network Quality Framework Useful for Applications, Users and Operators" {{draft-teigen-ippm-app-quality-metric-reqs}} describes a set of requirements for a network quality framework. This document explores how the quality attenuation metric and framework {{TR-452.1}} can be extended to meet the full set of requirements.
 
-Quality attenuation is a network quality metric that meets the most of the criterias set out in the requirements; it can capture the probability of a network satisfying requirements, it is composable, and it can be compared to a variety of application requirements. The part that is yet missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application, per application-type, or per-SLA approach is appropriate here. The challenge lies in specifying how to simplify enough without losing too much in terms of precision and accuracy.
+Quality attenuation is a network quality metric that meets the most of the criterias set out in the requirements; it can capture the probability of a network satisfying application requirements, it is composable, and it can be compared to a variety of application requirements. The part that is yet missing is how to present quality attenuation results to end-users and application developers in an understandable way. We believe a per-application, per application-type, or per-SLA approach is appropriate here. The challenge lies in specifying how to simplify enough without losing too much in terms of precision and accuracy.
 
 We believe the probabilistic approach is key as the network stack and applications network quality adaptation can be highly complex. Applications and the underlying networking protocols makes separate optimizations based on their perceived network quality over time and saying something about an outcome with absolute certainty will be practically impossible. We can however make educated guesses on the probability of outcomes.
 
@@ -120,9 +120,9 @@ Two distributions can be composed using convolution {{TR-452.1}}.
 # Sampling requirements
 To reach the design goal of being useful in the contexts laid out in "Requirements for a Network Quality Framework Useful for Applications, Users and Operators" {{draft-teigen-ippm-app-quality-metric-reqs}}, this work imposes no requirement on the time period or the network loading situation. This choice has pros and cons. Latency under load is extremely important, but average or median latency has a role too. However, a network quality metric that does not take latency under load into account is bound to fail at predicting application outcome.
 
-This framework only requires a latency distribution. [sentence]If one samples latency over a time period where the network is loaded, latency under load will be part of the distribution, which is encouraged, but is not always possible, for example when passively monitoring the latency of real traffic.
+This framework only requires a latency distribution. If the sampling is done while the network is loaded, latency under load will be part of the distribution, which is encouraged, but is not always possible, for example when passively monitoring the latency of real traffic.
 
-It takes quite a few samples to have a statistically significant distribution. Modeling a distribution may be a challenging software engineering task, hence we need to sample the latency distribution at certain percentiles. A list of 10 percentiles in a logarithmic-esque fashion has already been suggested in industry \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] and seems adequate. This is all that the framework defines. Note that convolution can still be applied with a list of percentiles, but at lower precision.
+It takes quite a few samples to have a statistically significant distribution. Modeling a distribution may be a challenging software engineering task, hence we need to sample the latency distribution at certain percentiles. A list of 10 percentiles in a logarithmic-esque fashion has already been suggested in industry \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] and seems adequate. We propose to define a shared set of percentile values to report.
 
 The framework is flexible when it comes to the direction of traffic that is being sampled, but does require that it is noted whether the latency distribution is measured one-way or two-way. The framework does not require an explicit bandwidth measurement, but does require a note on the maximal observed throughput in the time period.
 
@@ -143,9 +143,9 @@ To make sure we can trust measurements from others and analyze their precision, 
 By requiring the report of these variables, we ensure that the network measurements can be analyzed for precision and confidence.
 
 # Describing Network Requirements
-This work builds upon the work already proposed in the Broadband Forum standard called Quality of Experience Delivered (QED/TR-452) {{TR-452.1}}. In essence, it describes network requirements as a list of percentile and latency requirement tuples. In  words: The network requirement for this app quality level/app/app category/SLA “at 4 Mbps, 90% of packets needs to arrive within 100 ms, 100% of packets needs to arrive within 200ms”. This list can be as simple as “100% of packets need to arrive within 200ms” or as long as you would like. For the sake of simplicity, the requirements percentiles must match one or more of the percentiles defined in the measurements,  i.e., one can set requirements at the  \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] percentiles. The last specified percentile marks the acceptable packet loss. I.e. if the 99th percentile is 100, and the 99.9th or 100th percentile is not, 1% packet loss (100-99) is inferred.
+This work builds upon the work already proposed in the Broadband Forum standard called Quality of Experience Delivered (QED/TR-452) {{TR-452.1}}. In essence, it describes network requirements as a list of percentile and latency requirement tuples. In  words, a network requirement may be expressed as: The network requirement for this app quality level/app/app category/SLA is “at 4 Mbps, 90% of packets needs to arrive within 100 ms, 100% of packets needs to arrive within 200ms”. This list can be as simple as “100% of packets need to arrive within 200ms” or as long as you would like. For the sake of simplicity, the requirements percentiles must match one or more of the percentiles defined in the measurements,  i.e., one can set requirements at the  \[0th, 10th, 25th, 50th, 75th, 90th, 95th, 99th, 99.9th, 100th\] percentiles. The last specified percentile marks the acceptable packet loss. I.e. if the 99th percentile is 100, and the 99.9th or 100th percentile is not, 1% packet loss (100-99) is inferred.
 
-Throughput or bandwidth requirements are yet to be mentioned, applications do of course have throughput requirements. With classical TCP and typical UDP flows, latency and packet loss would be enough, as they are bound to create some latency or packet loss when ramping up throughput if subsequently they become hindered by insufficient bandwidth. However, we cannot always rely on monitoring latency exclusively, as low bandwidth may give poor application outcomes without necessarily inducing a lot of latency. Therefore, the network requirements should include a minimum bandwidth requirement.
+Applications do of course have throughput requirements. With classical TCP and typical UDP flows, latency and packet loss would be enough, as they are bound to create some latency or packet loss when ramping up throughput if subsequently they become hindered by insufficient bandwidth. However, we cannot always rely on monitoring latency exclusively, as low bandwidth may give poor application outcomes without necessarily inducing a lot of latency. Therefore, the network requirements should include a minimum bandwidth requirement.
 
 Whether the requirements are one-way or two-way must be specified.
 
@@ -153,16 +153,16 @@ Until now, network requirements and measurements are what is already standardize
 
 To do that we need to make articulating the network requirements a little bit more complicated. A key design goal was to have a distance measure between perfect and useless, and have a way of quantifying what is ‘better’.
 
-We extend the requirements (new highlighted in **bold**):
+We extend the requirements to include the quality required for perfection and a quality threshold beyond which the application is considered useless.
 
-**Network Requirements for Perfection (NRP):** At 4 Mbps,  99% of packets need to arrive within 100ms, 99.9% within 200ms (implying that 0.1% packet loss is acceptable) **for the outcome to be perfect**.
-**Network Requirement points of uselessness (NRPoU): If 99% of the packets have not arrived after 200ms, or 99.9% within 300ms, the outcome will be useless.**
+Network Requirements for Perfection (NRP), for example: At 4 Mbps,  99% of packets need to arrive within 100ms, 99.9% within 200ms (implying that 0.1% packet loss is acceptable) for the outcome to be perfect.
+Network Requirement points of uselessness (NRPoU): If 99% of the packets have not arrived after 200ms, or 99.9% within 300ms, the outcome will be useless.
 
 Where the NRPoU percentiles and NRP are a required pair. I.e., if the 99.9th percentile is part of the point of uselessness then the  network requirements must also include the 99.9th percentile.
 
 # Calculating Quality of Outcome (QoO)
 
-At this point we have everything to calculate the quality of the application outcome. The QoO. There are 3 scenarios:
+At this point we have everything we need to calculate the quality of the application outcome. The QoO. There are 3 scenarios:
 
 1. The network meets all the requirements for perfection. There is a 100% chance that the application is not lagging because of the network
 2. The network does meet one of the criteria of uselessness, including bandwidth. There is a 0% chance that the application will work because of the network
@@ -205,8 +205,9 @@ Someone who wishes to make a network requirement for an application in the simpl
 * Observe the application and note the threshold where the application stops working perfectly
 * Observe the application and note the threshold where the application stops being useful at all
 
-Someone who wishes to find sophisticated network requirements for and
-* Set thresholds for acceptable fps, animation fluidity, i/o latency (voice, video, actions), or other observable user-facing metrics
+Someone who wishes to find sophisticated network requirements might proceed in this way
+
+* Set thresholds for acceptable fps, animation fluidity, i/o latency (voice, video, actions), or other metrics capturing outcomes that directly affects the user experience
 * Create a tool for measuring these user-facing metrics
 * Simulate varying latency distribution with increasing levels of latency while measuring the user facing metrics.
 
@@ -229,7 +230,7 @@ NRPoU
 Of course, it is possible to specify network requirements for Teams with multiple NRP/NRPoU, for different quality levels or one/two way video and so on. Then one can calculate the QoO at each level.
 
 # Known Weaknesses and open questions
-We have described a way of simplifying how the network requirements of applications can be compared to quality attenuation measurements. The simplification introduces several artifacts that may or may not be significant. If new information emerge that indicate other tradeoffs are more fit for our purpose, we should switch before this Internet Draft moves further
+We have described a way of simplifying how the network requirements of applications can be compared to quality attenuation measurements. The simplification introduces several artifacts that may or may not be significant. If new information emerge that indicate other tradeoffs are more fit for our purpose, we should switch before this Internet Draft moves further. In this section we discuss some known limitations.
 
 ## Missing Temporal Information in Distributions.
 These two latency series: 1,200,1,200,1,200,1,200,1,200 and 1,1,1,1,1,200,200,200,200,200 Will have identical distributions, but may have different application performance. Ignoring this information is a tradeoff between simplicity and precision. To capture all information necessary to perfectly capture outcomes we are getting into extreme computational complexity. As an application's performance is bound by how the developers change to varying network performance, meaning nearly all different series of latencies may have different application outcomes.
@@ -248,8 +249,6 @@ To ensure simplicity, packet loss is described as infinite latency and the resol
 
 ## Arbitrary selection of percentiles:
 There is a need for a selection of percentiles, as we in the name of simplicity can’t use them all. But how should we select them? The 0th (minimal) and 50th (median) percentile have implicit usage by themselves. {{BITAG}} discusses that the 90th, 98th and 99th percentiles are key for some apps. In general the wisdom is that the higher percentiles are more useful for interactive applications, but only to a certain point. At this point an application sees it as packet loss and may adapt to it. Should we pick the 95th, 96th percentile, the 96.5th or the 97th? We don’t know, and as this is likely not universal across applications and applications classes, we simply have to choose arbitrarily, and to the best of our knowledge.
-
-
 
 # Conventions and Definitions
 
