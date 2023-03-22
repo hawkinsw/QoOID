@@ -189,14 +189,14 @@ Measured Minumum bandwidth: 32 Mbps / 28 Mbps
 
 Then the QoO is defined:
 
-QoO 
+QoO
 
     = Min(
      ((1-(350 ms - 250 ms )/(400 ms - 250 ms))*100),
      ((1-(352 ms - 350 ms)/(401 ms - 350 ms))*100)
      )
 
-    = Min (33.33,96.08) 
+    = Min (33.33,96.08)
 
     = 33.33
 
