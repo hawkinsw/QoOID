@@ -182,14 +182,24 @@ i is the length of NRP / NRPoU latency per percentile requirements
 ML is Measured Latency in percentiles and milliseconds
 
 ## Example requirements and measured latency:
-NRP: 4 Mbps {99,250},{99.9,350}
-NRPoU:  {99,400},{99.9,401}
-Measured Latency: .... 99p = 350ms, 99.9p = 352ms
-Measured Minumum bandwidth: 32 Mbps / 28Mbps
+NRP: 4 Mbps {99%, 250 ms},{99.9%, 350 ms}
+NRPoU:  {99%, 400 ms},{99.9%, 401 ms}
+Measured Latency: .... 99% = 350ms, 99.9% = 352 ms
+Measured Minumum bandwidth: 32 Mbps / 28 Mbps
 
 Then the QoO is defined:
-QoO = Min(  ((1-(350 - 250)/(400-250))*100),((1-(352 - 350)/(401-350))*100))
-= Min (33.33,96.08) = 33.33
+
+QoO 
+
+    = Min(
+     ((1-(350 ms - 250 ms )/(400 ms - 250 ms))*100),
+     ((1-(352 ms - 350 ms)/(401 ms - 350 ms))*100)
+     )
+
+    = Min (33.33,96.08) 
+
+    = 33.33
+
 
 In this example, we would say:
 This application/SLA/application category has a 33% chance of being lag-free on this network
