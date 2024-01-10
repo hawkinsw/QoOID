@@ -172,7 +172,7 @@ At this point we have everything we need to calculate the quality of the applica
 1 and 2 require nothing more from the framework. For 3, we will now specify the calculation between to translate these distances to a 0 to 100 measure. We use the percentile pair where the measured latency is the closest to the NRPoU as the application is only as good as its weakest link.
 
 Mathematically:
- QoO = min(ML, NRP, NRPoU) = (1-(ML-NRP)/(NRPoU-NRP)) * 100)
+ QoO = min(ML, NRP, NRPoU) = (1-(ML-NRP)/(NRPoU-NRP)) * 100
 
 Essentially, where on the relative distance between Network Requirement for Perfection (NRP) and Network Requirement Point of Uselessness (NRPoU) the Measured Latency (ML) lands, normalized to a percentage.
 
@@ -227,7 +227,7 @@ A QoO score at 94 can be communicated as "John's smartphone has a 94% chance of 
 The reason for making the QoO metric for a session or time-period is to make it understandable for an end-user, an end-user should not have to relate to the time period the metric is for.
 
 ## An example
-Example.com's video-conferencing service requirements can be translated into the QoO Framework. For best performance for video meetings they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and <30 ms jitter. This can be translated to an NRP (if we take some liberties with interpreting their jitter score):
+Example.com's video-conferencing service requirements can be translated into the QoO Framework. For best performance for video meetings, they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and <30 ms jitter. This can be translated to an NRP:
 
 NRP example.com video conferencing service:
 At minimum 4/4 Mbps.
@@ -238,7 +238,7 @@ For minimum requirements example.com does not specify anything, but at 500ms lat
 NRPoU
 {0p=500,99p=1000ms}
 
-Of course, it is possible to specify network requirements for Teams with multiple NRP/NRPoU, for different quality levels or one/two way video and so on. Then one can calculate the QoO at each level.
+Of course, it is possible to specify network requirements for Example.com with multiple NRP/NRPoU, for different quality levels (resolutions) or one/two way video and so on. Then one can calculate the QoO at each level.
 
 # Known Weaknesses and open questions
 We have described a way of simplifying how the network requirements of applications can be compared to quality attenuation measurements. The simplification introduces several artifacts that may or may not be significant. If new information emerges that indicate other tradeoffs are more fit for our purpose, we should switch before this Internet Draft moves further. In this section we discuss some known limitations.
@@ -247,6 +247,8 @@ Volatile networks - in particular, mobile cellular networks - pose a challenge f
 
 ## Missing Temporal Information in Distributions.
 These two latency series: 1,200,1,200,1,200,1,200,1,200 and 1,1,1,1,1,200,200,200,200,200 will have identical distributions, but may have different application performance. Ignoring this information is a tradeoff between simplicity and precision. To capture all information necessary to perfectly capture outcomes we are getting into extreme computational complexity. As an application's performance is bound by how the developers react to varying network performance, meaning nearly all different series of latencies may have different application outcomes.
+
+It will most likely be necessary to add a time-scale to the application requirement specifications.
 
 ## Subsampling the real distribution
 Additionally, we cannot capture latency on every packet that is sent. We can probe and sample, but there will always be unknowns. We are now in the realm of probability. Perfection is impossible, but instead of denying this, we should embrace it, which is why talking about the probability of outcomes is the way forward.
@@ -324,13 +326,15 @@ they see fit".
 * The date when information about this particular implementation was
 last updated:
 
-  10th of July 2023
+  10th of January 2024
 
 ## goresponsiveness
 
 * Link to the open-source repository:
 
   https://github.com/network-quality/goresponsiveness
+
+  The specific pull-request: https://github.com/network-quality/goresponsiveness/pull/56
 
 * The organization responsible for the implementation:
 
@@ -365,7 +369,7 @@ last updated:
 * The date when information about this particular implementation was
 last updated:
 
-  10th of July 2023
+  10th of January 2024
 
 # Conventions and Definitions
 
