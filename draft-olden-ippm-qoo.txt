@@ -5,7 +5,7 @@
 IP Performance Measurement                                      M. Olden
 Internet-Draft                                              B. I. Teigen
 Intended status: Informational                                     Domos
-Expires: 11 January 2024                                    10 July 2023
+Expires: 13 July 2024                                    10 January 2024
 
 
                            Quality of Outcome
@@ -55,11 +55,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2024.
+   This Internet-Draft will expire on 13 July 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -336,7 +336,7 @@ Table of Contents
    good as its weakest link.
 
    Mathematically: QoO = min(ML, NRP, NRPoU) = (1-(ML-NRP)/(NRPoU-NRP))
-   * 100)
+   * 100
 
    Essentially, where on the relative distance between Network
    Requirement for Perfection (NRP) and Network Requirement Point of
@@ -429,9 +429,8 @@ Table of Contents
 
    Example.com's video-conferencing service requirements can be
    translated into the QoO Framework.  For best performance for video
-   meetings they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and
-   <30 ms jitter.  This can be translated to an NRP (if we take some
-   liberties with interpreting their jitter score):
+   meetings, they specify 4/4 Mbps, 100 ms latency, <1% packet loss, and
+   <30 ms jitter.  This can be translated to an NRP:
 
    NRP example.com video conferencing service: At minimum 4/4 Mbps.
    {0p=70ms,99p=100ms}
@@ -442,9 +441,10 @@ Table of Contents
 
    NRPoU {0p=500,99p=1000ms}
 
-   Of course, it is possible to specify network requirements for Teams
-   with multiple NRP/NRPoU, for different quality levels or one/two way
-   video and so on.  Then one can calculate the QoO at each level.
+   Of course, it is possible to specify network requirements for
+   Example.com with multiple NRP/NRPoU, for different quality levels
+   (resolutions) or one/two way video and so on.  Then one can calculate
+   the QoO at each level.
 
 7.  Known Weaknesses and open questions
 
@@ -485,6 +485,9 @@ Table of Contents
    application's performance is bound by how the developers react to
    varying network performance, meaning nearly all different series of
    latencies may have different application outcomes.
+
+   It will most likely be necessary to add a time-scale to the
+   application requirement specifications.
 
 7.2.  Subsampling the real distribution
 
@@ -601,13 +604,16 @@ Table of Contents
    *  The date when information about this particular implementation was
       last updated:
 
-      10th of July 2023
+      10th of January 2024
 
 8.2.  goresponsiveness
 
    *  Link to the open-source repository:
 
       https://github.com/network-quality/goresponsiveness
+
+      The specific pull-request: https://github.com/network-
+      quality/goresponsiveness/pull/56
 
    *  The organization responsible for the implementation:
 
@@ -644,7 +650,7 @@ Table of Contents
    *  The date when information about this particular implementation was
       last updated:
 
-      10th of July 2023
+      10th of January 2024
 
 9.  Conventions and Definitions
 
