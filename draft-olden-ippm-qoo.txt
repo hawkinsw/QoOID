@@ -5,7 +5,7 @@
 IP Performance Measurement                                      M. Olden
 Internet-Draft                                              B. I. Teigen
 Intended status: Informational                                     Domos
-Expires: 13 July 2024                                    10 January 2024
+Expires: 22 July 2024                                    19 January 2024
 
 
                            Quality of Outcome
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 July 2024.
+   This Internet-Draft will expire on 22 July 2024.
 
 Copyright Notice
 
@@ -110,8 +110,8 @@ Table of Contents
    how the quality attenuation metric and framework [TR-452.1] can be
    extended to meet the full set of requirements.
 
-   Quality attenuation is a network quality metric that meets the most
-   of the criteria set out in the requirements; it can capture the
+   Quality attenuation is a network quality metric that meets most of
+   the criteria set out in the requirements; it can capture the
    probability of a network satisfying application requirements, it is
    composable, and it can be compared to a variety of application
    requirements.  The part that is yet missing is how to present quality
